@@ -20,11 +20,18 @@
 
     <div>
         @if($articles)
-            <ul>
                 @foreach($articles as $index => $article)
-                <li><a href="{{ route('article', $index)}}">{{$article['title']}}</a></li>
+                <article class='card mb-2'>
+                    <div class='card-body?'>
+                        <span>{{ $article['category'] }}</span>
+                        <h4><a href="{{ route('article', $index)}}">{{ $article['title'] }}</a></h4>
+                        <p>{{ $article['description'] }}</p>
+                        <div class='text-end'>
+                            <a href="{{ route('article', $index) }}">Più informazioni...</a>
+                        </div>
+                    </div>
+                </article>
                 @endforeach
-            </ul>
         @else
                 <p>Non ci sono articoli disponibili</p>
         @endif

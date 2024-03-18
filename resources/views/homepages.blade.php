@@ -16,7 +16,7 @@
         <a class="nav-link" href="{{route('contacts')}}">Contatti</a>
         
     </nav>
-        <h1>Benvenuto</h1>   
+        <h1>{{ $title }}</h1>   
 
 
     </body>
