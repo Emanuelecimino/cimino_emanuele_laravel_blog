@@ -12,9 +12,9 @@ class PageController extends Controller
 public function __construct()
 {
         $this->articles = [
-            ['title' => 'Studente 1', 'category' => 'Part-Time', 'description' => 'Sono uno studente'],
-            ['title' => 'Studente 2', 'category' => 'Part-Time', 'description' => 'Sono uno studente'],
-            ['title' => 'Studente 3', 'category' => 'Part-Time', 'description' => 'Sono uno studente']
+            ['title' => 'Studente 1', 'category' => 'Part-Time', 'description' => 'Sono uno studente', 'visible' => true],
+            ['title' => 'Studente 2', 'category' => 'Part-Time', 'description' => 'Sono uno studente', 'visible' => false ],
+            ['title' => 'Studente 3', 'category' => 'Part-Time', 'description' => 'Sono uno studente','visible' => true]
     ]; 
 }
 
@@ -25,12 +25,7 @@ public function homepage()
     return view('homepages', compact('title'));
 }
 
-public function contacts() 
-{
-        return view('pages.contacts', [
-            'title' => 'Contatti'
-        ]);
-}
+
 
 public function aboutUs() 
 {
@@ -42,12 +37,17 @@ public function aboutUs()
 
 public function articles() 
 {
-        return view('pages.articles', ['articles' => $this->articles]);
+    //dd($this->articles);
+      return view('pages.articles', ['articles' => $this->articles]);
 }
 
 public function article($article) 
 {
-    return view('pages.article', ['article' => $this->articles[$article]]);
+    $article = $this->articles[$article];
+    if(! $article['visible']) {
+        abort(404);
+    }
+    return view('pages.article', ['article' => $article]);
 }
 
 }
