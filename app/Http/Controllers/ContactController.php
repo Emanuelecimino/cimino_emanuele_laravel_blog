@@ -15,11 +15,6 @@ class ContactController extends Controller
 
 public function send(Request $request)
 {
-
-    // dd($request->all());
-
-    // dd($request->email);
-    // dd($request->message);
     if($request->email == '') {
         return redirect()->back()->with(['error' => 'Il campo email non può essere vuoto.']);
     }

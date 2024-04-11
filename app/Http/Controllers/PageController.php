@@ -3,26 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Article;
 class PageController extends Controller
 {
-
-    public $articles;
-
-public function __construct()
-{
-        $this->articles = [
-            ['title' => 'Studente 1', 'category' => 'Part-Time', 'description' => 'Sono uno studente', 'visible' => true],
-            ['title' => 'Studente 2', 'category' => 'Part-Time', 'description' => 'Sono uno studente', 'visible' => false ],
-            ['title' => 'Studente 3', 'category' => 'Part-Time', 'description' => 'Sono uno studente','visible' => true]
-    ]; 
-}
-
 public function homepage() 
 {
     $title = config('app.name');
 
-    return view('homepages', compact('title'));
+    
+
+    return view('homepages', compact('title', 'articles'));
 }
 
 
@@ -37,16 +27,13 @@ public function aboutUs()
 
 public function articles() 
 {
-    //dd($this->articles);
-      return view('pages.articles', ['articles' => $this->articles]);
+    $articles = Article::where('visible', true)->get();
+
+      return view('pages.articles', ['articles' => $articles]);
 }
 
-public function article($article) 
+public function article(Article $article) 
 {
-    $article = $this->articles[$article];
-    if(! $article['visible']) {
-        abort(404);
-    }
     return view('pages.article', ['article' => $article]);
 }
 
