@@ -6,10 +6,10 @@
         @if($articles)
             @foreach($articles as $article)
                 <x-card
-                    :category="$article->category"
+                    :category="$article->category->name"
                     :title="$article->title"
                     :description="$article->description" 
-                    :route="route('article', $article->id)" 
+                    :route="route('article', $article)" 
                 />
             @endforeach
         @else

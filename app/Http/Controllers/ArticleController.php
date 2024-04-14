@@ -12,7 +12,9 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        return view('articles.index', ['articles' => Article::all()]);
+        $articles = Article::where('user_id', auth()->user()->id)->orderBy('created_at', 'DESC')->get();
+
+        return view('articles.index', ['articles' => $articles]);
     }    
     public function create()
     {
@@ -21,8 +23,10 @@ class ArticleController extends Controller
 
     public function store(StoreArticleRequest $request)
     {
+        
+        $article = Article::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
 
-        $article = Article::create($request->all());
+        $article->user_id = auth()->user()->id;
 
         if($request->hasFile('image')&& $request->file('image')->isValid()) {
 
@@ -34,13 +38,44 @@ class ArticleController extends Controller
 
             $article->image = $request->file('image')->storeAs('public/images/' . $article->id, $fileName);    
 
-            $article->save();   
-       
-
-        
+            $article->save(); 
         }
-        
+
         return redirect()->route('articles.index')->with(['success' => 'Articolo creato correttamente!']);
+    }
+
+    public function edit(Article $article)
+    {
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+
+        return view('articles.edit', [
+            'article' => $article,
+            'categories' => Category::all(),
+        ]);
+    }
+
+    public function update(StoreArticleRequest $request, Article $article)
+    {
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+
+        $article->update($request->all());
+
+        return redirect()->back()->with(['success' => 'Articolo modificato correttamente!']);
+    }
+
+    public function destroy(Article $article)
+    {
+        if($article->user_id !== auth()->user()->id) {
+            abort(403);
+        }
+
+        $article->delete();
+
+        return redirect()->back()->with(['success' => 'Articolo cancellato correttamente!']);
     }
 }
 

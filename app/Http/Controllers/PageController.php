@@ -10,19 +10,20 @@ public function homepage()
 {
     $title = config('app.name');
 
-    
+    $articles = Article::orderBy('created_at', 'DESC')->take(10)->get();
 
     return view('homepages', compact('title', 'articles'));
 }
 
 
 
+
 public function aboutUs() 
 {
-        return view('pages.chi-siamo', [
-            'title' => 'About Us', 
-            'description' => 'Siamo studenti di Aulab'
-        ]);
+    return view('pages.chi-siamo', [
+        'title' => 'About Us',     
+        'description' => 'Siamo studenti di Aulab'    
+    ]);        
 }
 
 public function articles() 

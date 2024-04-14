@@ -66,7 +66,12 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(Category $category)
-    {
+    { 
+        if($category->articles->count()) {
+           return redirect()->back()->with(['warning'=> 'Attenzione non puoi cancellare questa categoria perchè ci sono degli articoli collegati']);
+          // \App\Models\Article::where('category_id', $category->id)->delete();
+        }
+
         $category->delete();
 
         return redirect()->back()->with(['success'=> 'Categoria cancellata correttamente']);
