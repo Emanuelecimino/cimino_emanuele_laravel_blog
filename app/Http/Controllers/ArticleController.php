@@ -26,6 +26,8 @@ class ArticleController extends Controller
         
         $article = Article::create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
 
+        $article->categories()->attach($request->categories); 
+
         $article->user_id = auth()->user()->id;
 
         if($request->hasFile('image')&& $request->file('image')->isValid()) {
@@ -64,6 +66,9 @@ class ArticleController extends Controller
 
         $article->update($request->all());
 
+        $article->categories()->detach();
+        $article->categories()->attach($request->categories);
+
         return redirect()->back()->with(['success' => 'Articolo modificato correttamente!']);
     }
 
@@ -73,7 +78,9 @@ class ArticleController extends Controller
             abort(403);
         }
 
-        $article->delete();
+            $article->categories()->detach();
+
+            $article->delete();
 
         return redirect()->back()->with(['success' => 'Articolo cancellato correttamente!']);
     }

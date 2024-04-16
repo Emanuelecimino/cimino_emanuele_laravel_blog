@@ -26,11 +26,11 @@
                 <tr>
                     <td>{{ $article->id }}</td>
                     <td>{{ $article->title }}</td>
-                    @if(! $article->category_id)
-                    <td></td>
-                    @else
-                    <td>{{ $article->category->name }}</td>
-                    @endif
+                    <td>
+                        @foreach( $article->categories as $category)
+                        <span class="me-3">{{ $category->name }}</span>
+                        @endforeach
+                    </td>
                     <td>
                         @if($article->visible)
                         <span class="badge text-bg-success">Si</span>

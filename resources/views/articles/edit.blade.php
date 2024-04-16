@@ -21,16 +21,19 @@
                             </div>
 
                             <div class="col-12">
-                                <label for="category_id">Categoria</label>
-                                <select name="category_id" id="category_id" class="form-control">
-                                    @foreach($categories as $category)
-                                    <option 
-                                        value="{{ $category->id }}"
-                                        @selected($category->id === $article->category_id)
-                                        >{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error ('category_id') <span class="text-danger small fw-bold">{{ $message }}</span> @enderror
+                                <label for="categories">Categoria</label>
+                                @foreach($categories as $category)
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                        @checked($article->categories->contains($category->id))
+                                        name="categories[]" 
+                                        type="checkbox" value="{{ $category->id }}">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                                @endforeach
+                                @error ('categories') <span class="text-danger small fw-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="col-12">
